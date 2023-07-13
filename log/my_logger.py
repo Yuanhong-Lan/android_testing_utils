@@ -19,6 +19,7 @@ class LogLevel(Enum):
     CRITICAL = 100
 
 
+CURRENT_LOG_LEVEL = LogLevel.DEBUG
 lock = Lock()
 
 
@@ -32,6 +33,9 @@ def new_line():
 
 
 def hint(log_level: LogLevel, tag: str, time: bool, info=""):
+    if log_level < CURRENT_LOG_LEVEL:
+        return
+
     s = str(info)
     if s.endswith('\n'):
         s = s[:-1]
