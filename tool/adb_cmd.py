@@ -35,12 +35,12 @@ def screen_record(device_id, save_file_path_device, record_seconds=None):
 class AppOperation:
     @staticmethod
     def install_apk(device_id, apk_file_path):
-        cmd = f"adb -s {device_id} install -r {apk_file_path}"
+        cmd = f"adb -s {device_id} install -r '{apk_file_path}'"
         os.system(cmd)
 
     @staticmethod
     def install_apk_with_permissions(device_id, apk_file_path):
-        cmd = f"adb -s {device_id} install -r -g {apk_file_path}"
+        cmd = f"adb -s {device_id} install -r -g '{apk_file_path}'"
         os.system(cmd)
 
     @staticmethod
@@ -65,7 +65,7 @@ class AppOperation:
 
     @staticmethod
     def uninstall_apk(device_id, apk_file_path):
-        cmd = f"adb -s {device_id} uninstall {apk_file_path}"
+        cmd = f"adb -s {device_id} uninstall '{apk_file_path}'"
         os.system(cmd)
 
 
@@ -77,7 +77,7 @@ class Logcat:
 
     @staticmethod
     def start_logcat(device_id, log_filter, log_file_path):
-        cmd = f"adb -s {device_id} logcat {log_filter} >> {log_file_path} &"
+        cmd = f"adb -s {device_id} logcat {log_filter} >> '{log_file_path}' &"
         os.system(cmd)
 
 
