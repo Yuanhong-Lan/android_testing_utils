@@ -15,7 +15,7 @@ from android_testing_utils.log import my_logger
 class GetComponentName:
     @staticmethod
     def get_EndEmmaBroadcast_receiver_name_by_aapt_dump_xmltree(apk_path):
-        cmd = f"aapt dump xmltree {apk_path} AndroidManifest.xml | grep EndEmmaBroadcast"
+        cmd = f"aapt dump xmltree '{apk_path}' AndroidManifest.xml | grep EndEmmaBroadcast"
         cmd_output = os.popen(cmd).read()
         pattern = re.compile('android:name\\(\\S+\\)="(\\S+)"')
         return re.findall(pattern, cmd_output)[0]
@@ -24,21 +24,21 @@ class GetComponentName:
 class GetPackageName:
     @staticmethod
     def get_package_name_from_apk_file_by_aapt_dump_badging(apk_path) -> str:
-        cmd = f"aapt dump badging {apk_path} | grep package"
+        cmd = f"aapt dump badging '{apk_path}' | grep package"
         cmd_output = os.popen(cmd).read()
         pattern = re.compile("name='(\\S+)'")
         return re.findall(pattern, cmd_output)[0]
 
     @staticmethod
     def get_package_name_from_apk_file_by_aapt2_dump_badging(apk_path) -> str:
-        cmd = f"aapt2 dump badging {apk_path} | grep package"
+        cmd = f"aapt2 dump badging '{apk_path}' | grep package"
         cmd_output = os.popen(cmd).read()
         pattern = re.compile("name='(\\S+)'")
         return re.findall(pattern, cmd_output)[0]
 
     @staticmethod
     def get_package_name_from_apk_file_by_aapt2_dump_packagename(apk_path) -> str:
-        cmd = f"aapt2 dump packagename {apk_path}"
+        cmd = f"aapt2 dump packagename '{apk_path}'"
         cmd_output = os.popen(cmd).read()
         return cmd_output.strip()
 
@@ -49,7 +49,7 @@ class GetAllActivities:
         my_logger.hint(my_logger.LogLevel.INFO, "AAPT", True, f"Start extracting all activities from apk file by aapt list")
         # if package_name is None:
         #     package_name = GetPackageName.get_package_name_from_apk_file_by_aapt2_dump_packagename(apk_path)
-        cmd = f"""aapt list -a {apk_path} | """ + \
+        cmd = f"""aapt list -a '{apk_path}' | """ + \
               r"""sed -n '/ activity /{:loop n;s/^.*android:name.*="\([^"]\{1,\}\)".*/\1/;T loop;p;t}'"""
         cmd_output = os.popen(cmd).read()
         activity_list = cmd_output.strip().split('\n')
@@ -67,7 +67,7 @@ class GetAllActivities:
         my_logger.hint(my_logger.LogLevel.INFO, "AAPT", True, f"Start extracting all activities from apk file by aapt dump xmltree")
         # if package_name is None:
         #     package_name = GetPackageName.get_package_name_from_apk_file_by_aapt2_dump_packagename(apk_path)
-        cmd = f"""aapt dump xmltree {apk_path} AndroidManifest.xml | """ + \
+        cmd = f"""aapt dump xmltree '{apk_path}' AndroidManifest.xml | """ + \
               r"""sed -n '/ activity /{:loop n;s/^.*android:name.*="\([^"]\{1,\}\)".*/\1/;T loop;p;t}'"""
         cmd_output = os.popen(cmd).read()
         activity_list = cmd_output.strip().split('\n')
@@ -86,7 +86,7 @@ class GetActivityAliasPairs:
     @staticmethod
     def get_all_activity_alias_pair_from_apk_file_by_aapt_dump_xmltree(apk_path) -> List[ActivityAliasPair]:
         my_logger.hint(my_logger.LogLevel.INFO, "AAPT", True, f"Start analyzing all activity alias pairs")
-        cmd = f"aapt dump xmltree {apk_path} AndroidManifest.xml"
+        cmd = f"aapt dump xmltree '{apk_path}' AndroidManifest.xml"
         cmd_output = os.popen(cmd).read()
         cmd_output_lines = cmd_output.split('\n')
 
@@ -120,7 +120,7 @@ class GetActivityAliasPairs:
 class GetEntranceActivity:
     @staticmethod
     def get_entrance_activity_from_apk_file_by_aapt_dump_badging(apk_path) -> str:
-        cmd = f"aapt dump badging {apk_path} | grep launchable"
+        cmd = f"aapt dump badging '{apk_path}' | grep launchable"
         cmd_output = os.popen(cmd).read()
         pattern = re.compile("name='(\\S+)'")
         return re.findall(pattern, cmd_output)[0]
