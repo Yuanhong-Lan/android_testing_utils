@@ -8,8 +8,10 @@ import datetime
 
 from enum import Enum
 from multiprocessing import Lock
+from functools import total_ordering
 
 
+@total_ordering
 class LogLevel(Enum):
     DEBUG = 10
     INFO = 20
@@ -18,8 +20,13 @@ class LogLevel(Enum):
     EXCEPTION = 50
     CRITICAL = 100
 
+    def __lt__(self, other):
+        if self.__class__ is other.__class__:
+            return self.value < other.value
+        return NotImplemented
 
-CURRENT_LOG_LEVEL = LogLevel.DEBUG
+
+CURRENT_LOG_LEVEL = LogLevel.INFO
 lock = Lock()
 
 
