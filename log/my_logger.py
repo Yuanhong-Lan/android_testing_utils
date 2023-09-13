@@ -26,7 +26,7 @@ class LogLevel(Enum):
         return NotImplemented
 
 
-CURRENT_LOG_LEVEL = LogLevel.DEBUG
+CURRENT_LOG_LEVEL = LogLevel.INFO
 lock = Lock()
 
 
