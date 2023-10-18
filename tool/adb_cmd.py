@@ -68,6 +68,12 @@ class AppOperation:
         cmd = f"adb -s {device_id} uninstall '{apk_file_path}'"
         os.system(cmd)
 
+    @staticmethod
+    def is_app_installed(device_id, package_name):
+        cmd = f"adb -s {device_id} shell pm list packages {package_name}"
+        cmd_output = os.popen(cmd).read()
+        return cmd_output == ''
+
 
 class Logcat:
     @staticmethod
