@@ -40,7 +40,7 @@ class AppOperation:
 
     @staticmethod
     def install_apk_with_permissions(device_id, apk_file_path):
-        cmd = f"adb -s {device_id} install -r -g '{apk_file_path}'"
+        cmd = f"timeout 20s adb -s {device_id} install -r -g '{apk_file_path}'"
         os.system(cmd)
 
     @staticmethod
