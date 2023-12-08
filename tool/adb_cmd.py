@@ -4,7 +4,9 @@
 # ----------------------
 import os
 import re
+import shutil
 from enum import Enum
+from multiprocessing import Lock
 
 from android_testing_utils.log import my_logger
 
@@ -14,13 +16,17 @@ def run_adb_as_root(device_id):
     os.system(cmd)
 
 
-def screencap_to_path(device_id, path_local):
-    tmp_path = "/sdcard/screen.png"
-    cmd = f"adb -s {device_id} shell screencap {tmp_path}"
-    my_logger.hint(my_logger.LogLevel.INFO, "ADB", True, f"Screen cap: {cmd}")
-    os.system(cmd)
-    FileOperation.pull(device_id, tmp_path, path_local)
-    FileOperation.remove(device_id, tmp_path)
+screencap_lock = Lock()
+def screencap_to_path(device_id, full_path_local):
+    with screencap_lock:
+        tmp_path = "/sdcard/screen.png"
+        cmd = f"adb -s {device_id} shell screencap {tmp_path}"
+        my_logger.hint(my_logger.LogLevel.INFO, "ADB", True, f"Screen cap: {cmd}")
+        os.system(cmd)
+        local_dir, local_file = os.path.split(full_path_local)
+        FileOperation.pull(device_id, tmp_path, local_dir)
+        shutil.move(os.path.join(local_dir, "screen.png"), full_path_local)
+        FileOperation.remove(device_id, tmp_path)
 
 
 def screen_record(device_id, save_file_path_device, record_seconds=None):
