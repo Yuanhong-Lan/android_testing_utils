@@ -229,7 +229,7 @@ class GetCurrentPackageAndActivity:
 
     @staticmethod
     def get_current_package_and_activity_by_dumpsys_window_mFocusedApp(device_id, log=True) -> Tuple[str, str]:
-        cmd = f"adb -s {device_id} shell dumpsys window | grep mFocusedApp=AppWindowToken"
+        cmd = f"adb -s {device_id} shell dumpsys window | grep mFocusedApp"
         cmd_output = os.popen(cmd).read()
         if log:
             my_logger.hint(my_logger.LogLevel.INFO, "ADB", True, f"Focus info:{cmd_output}")
