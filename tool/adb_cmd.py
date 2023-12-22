@@ -11,6 +11,13 @@ from multiprocessing import Lock
 from android_testing_utils.log import my_logger
 
 
+def restart_server(device_id):
+    cmd = f"adb -s {device_id} kill-server"
+    os.system(cmd)
+    cmd = f"adb -s {device_id} start-server"
+    os.system(cmd)
+
+
 def run_adb_as_root(device_id):
     cmd = f"adb -s {device_id} root"
     os.system(cmd)
