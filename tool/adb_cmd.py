@@ -192,6 +192,18 @@ class Network:
         cmd = f"adb -s {device_id} shell svc data disable"
         os.system(cmd)
 
+    @staticmethod
+    def open_wifi(device_id):
+        my_logger.hint(my_logger.LogLevel.INFO, "ADB", True, f"Open wifi")
+        cmd = f"adb -s {device_id} shell svc wifi enable"
+        os.system(cmd)
+
+    @staticmethod
+    def close_wifi(device_id):
+        my_logger.hint(my_logger.LogLevel.INFO, "ADB", True, f"Close wifi")
+        cmd = f"adb -s {device_id} shell svc wifi disable"
+        os.system(cmd)
+
 
 class VolumeOptions(Enum):
     Up = "volume_up"
