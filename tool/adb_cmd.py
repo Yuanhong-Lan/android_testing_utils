@@ -259,16 +259,20 @@ class Input:
 class GetDeviceInfo:
     @staticmethod
     def get_window_resolution_ratio(device_id):
-        cmd = f"adb -s {device_id} shell wm size"
-        cmd_output = os.popen(cmd).read()
-        pattern = re.compile("size: (\\d+)x(\\d+)")
-        x, y = re.findall(pattern, cmd_output)[0]
+        try:
+            cmd = f"adb -s {device_id} shell wm size"
+            cmd_output = os.popen(cmd).read()
+            pattern = re.compile("size: (\\d+)x(\\d+)")
+            x, y = re.findall(pattern, cmd_output)[0]
+        except Exception as e:
+            my_logger.hint(my_logger.LogLevel.ERROR, "ADB", True, f"Get window resolution ratio failed: {e}, return default 1080x1920")
+            return 1080, 1920
         return x, y
 
     @staticmethod
     def get_connected_devices():
         cmd = "adb devices"
         cmd_output = os.popen(cmd).read()
-        pattern = re.compile("(\S+)\s+device\n")
+        pattern = re.compile("(\\S+)\\s+device\n")
         devices = re.findall(pattern, cmd_output)
         return devices
