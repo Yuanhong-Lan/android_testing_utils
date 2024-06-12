@@ -264,3 +264,11 @@ class GetDeviceInfo:
         pattern = re.compile("size: (\\d+)x(\\d+)")
         x, y = re.findall(pattern, cmd_output)[0]
         return x, y
+
+    @staticmethod
+    def get_connected_devices():
+        cmd = "adb devices"
+        cmd_output = os.popen(cmd).read()
+        pattern = re.compile("(\S+)\s+device\n")
+        devices = re.findall(pattern, cmd_output)
+        return devices
