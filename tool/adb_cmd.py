@@ -267,7 +267,7 @@ class GetDeviceInfo:
         except Exception as e:
             my_logger.hint(my_logger.LogLevel.ERROR, "ADB", True, f"Get window resolution ratio failed: {e}, return default 1080x1920")
             return 1080, 1920
-        return x, y
+        return int(x), int(y)
 
     @staticmethod
     def get_connected_devices():
