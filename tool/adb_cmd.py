@@ -87,6 +87,16 @@ class AppOperation:
         cmd_output = os.popen(cmd).read()
         return cmd_output == ''
 
+    @staticmethod
+    def get_apk_of_installed_app(device_id, package_name, target_path_local):
+        cmd = f"adb -s {device_id} shell pm path {package_name}"
+        cmd_output = os.popen(cmd).read().strip()
+        if not cmd_output.startswith("package:"):
+            my_logger.hint(my_logger.LogLevel.ERROR, "ADB", True, f"Get apk of installed app failed: {cmd_output}")
+            return
+        apk_path = cmd_output.split(":")[1]
+        FileOperation.pull(device_id, apk_path, target_path_local)
+
 
 class Logcat:
     @staticmethod

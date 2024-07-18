@@ -7,9 +7,25 @@ import os
 import re
 import collections
 
-from typing import List, Tuple
+from typing import List, Tuple, Callable
 
 from android_testing_utils.log import my_logger
+
+
+class ProcessUtil:
+    @staticmethod
+    def pull_apk_of_installed_app_and_analysis(package_name, device_id, f: Callable):
+        cmd = f"adb -s {device_id} shell pm path {package_name}"
+        cmd_output = os.popen(cmd).read()
+
+        source_path = cmd_output.replace("package:", "").strip()
+        target_path = os.path.join(os.path.dirname(__file__), f"./{package_name}_temp.apk")
+        cmd = f"adb -s {device_id} pull {source_path} {target_path}"
+        os.system(cmd)
+
+        res = f(target_path)
+        os.remove(target_path)
+        return res
 
 
 class GetComponentName:
@@ -61,6 +77,13 @@ class GetAllActivities:
         #     if not activity_list[i].startswith(prefix):
         #         activity_list.pop(i)
         return activity_list
+
+    @staticmethod
+    def get_all_activities_from_installed_app_by_aapt_list_with_apk_pulled(package_name, device_id):
+        return ProcessUtil.pull_apk_of_installed_app_and_analysis(
+            package_name, device_id,
+            GetAllActivities.get_all_activities_from_apk_file_by_aapt_list
+        )
 
     @staticmethod
     def get_all_activities_from_apk_file_by_aapt_dump_xmltree(apk_path) -> List[str]:
@@ -127,17 +150,10 @@ class GetEntranceActivity:
 
     @staticmethod
     def get_entrance_activity_from_installed_app_by_aapt_dump_badging_with_apk_pulled(package_name, device_id) -> str:
-        cmd = f"adb -s {device_id} shell pm path {package_name}"
-        cmd_output = os.popen(cmd).read()
-
-        source_path = cmd_output.replace("package:", "").strip()
-        target_path = os.path.join(os.path.dirname(__file__), f"./{package_name}_temp.apk")
-        cmd = f"adb -s {device_id} pull {source_path} {target_path}"
-        os.system(cmd)
-
-        entrance_activity = GetEntranceActivity.get_entrance_activity_from_apk_file_by_aapt_dump_badging(target_path)
-        os.remove(target_path)
-        return entrance_activity
+        return ProcessUtil.pull_apk_of_installed_app_and_analysis(
+            package_name, device_id,
+            GetEntranceActivity.get_entrance_activity_from_apk_file_by_aapt_dump_badging
+        )
 
     @staticmethod
     def get_entrance_activity_from_installed_app_by_dumpsys_package(package_name, device_id) -> str:
