@@ -61,6 +61,7 @@ def auto_hint(log_level: LogLevel, tag, time: bool, info=""):
         real_tag = tag.__name__
     else:
         real_tag = tag.__class__.__name__
+    real_tag = f"(AUTO){real_tag}"
     hint(log_level, real_tag, time, info)
 
 
