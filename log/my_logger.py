@@ -52,6 +52,18 @@ def hint(log_level: LogLevel, tag: str, time: bool, info=""):
         output(f"{log_level} | {tag} | {s}", flush=True)
 
 
+def auto_hint(log_level: LogLevel, tag, time: bool, info=""):
+    if type(tag) == str:
+        real_tag = tag
+    elif type(tag) == type:
+        real_tag = tag.__name__
+    elif callable(tag):
+        real_tag = tag.__name__
+    else:
+        real_tag = tag.__class__.__name__
+    hint(log_level, real_tag, time, info)
+
+
 def append_event_extraction_log(location, info=""):
     info = f"{datetime.datetime.now()}    {info}"
     cmd = f"echo {info} >> {location}/event_extraction_log.txt"
