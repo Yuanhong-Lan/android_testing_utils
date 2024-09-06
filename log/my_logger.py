@@ -10,6 +10,8 @@ from enum import Enum
 from multiprocessing import Lock
 from functools import total_ordering
 
+import yaml
+
 
 @total_ordering
 class LogLevel(Enum):
@@ -26,7 +28,9 @@ class LogLevel(Enum):
         return NotImplemented
 
 
-CURRENT_LOG_LEVEL = LogLevel.INFO
+CURRENT_LOG_LEVEL = LogLevel[
+    yaml.safe_load(open(os.path.join(os.path.dirname(__file__), "log_config.yaml")))["LOG_LEVEL"]
+]
 lock = Lock()
 
 
@@ -56,12 +60,11 @@ def auto_hint(log_level: LogLevel, tag, time: bool, info=""):
     if type(tag) == str:
         real_tag = tag
     elif type(tag) == type:
-        real_tag = tag.__name__
+        real_tag = f"(AUTO-CLASS) {tag.__name__}"
     elif callable(tag):
-        real_tag = tag.__name__
+        real_tag = f"(AUTO-FUNC) {tag.__name__}"
     else:
-        real_tag = tag.__class__.__name__
-    real_tag = f"(AUTO) {real_tag}"
+        real_tag = f"(AUTO-INST) {tag.__class__.__name__}"
     hint(log_level, real_tag, time, info)
 
 
