@@ -14,8 +14,10 @@ def function_time_count_decorator(function):
         before = time.time()
         res = function(*args, **kwargs)
         after = time.time()
-        my_logger.hint(my_logger.LogLevel.INFO, "TimeCountDecorator", False,
-                       f"Function {function.__name__} cost time: {round(after-before, 4)}s")
+        my_logger.auto_hint(
+            my_logger.LogLevel.INFO, "TimeCountDecorator", False,
+            f"Function {function.__name__} cost time: {round(after-before, 4)}s"
+        )
         return res
     return wrapper
 
@@ -26,8 +28,10 @@ def class_method_time_count_decorator(function):
         before = time.time()
         res = function(self, *args, **kwargs)
         after = time.time()
-        my_logger.hint(my_logger.LogLevel.INFO, "TimeCountDecorator", False,
-                       f"Function {function.__name__} cost time: {round(after-before, 2)}s")
+        my_logger.auto_hint(
+            my_logger.LogLevel.INFO, "TimeCountDecorator", False,
+            f"Function {function.__name__} cost time: {round(after-before, 2)}s"
+        )
         return res
     return wrapper
 
@@ -38,7 +42,9 @@ def normal_method_time_count_decorator(function):
         before = time.time()
         res = function(*args, **kwargs)
         after = time.time()
-        my_logger.hint(my_logger.LogLevel.INFO, "TimeCountDecorator", False,
-                       f"Function {function.__name__} cost time: {round(after-before, 2)}s")
+        my_logger.auto_hint(
+            my_logger.LogLevel.INFO, "TimeCountDecorator", False,
+            f"Function {function.__name__} cost time: {round(after-before, 2)}s"
+        )
         return res
     return wrapper
