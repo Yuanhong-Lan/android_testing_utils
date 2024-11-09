@@ -97,7 +97,7 @@ class ADBAppOperation:
     def is_app_installed(cls, device_id, package_name):
         cmd = f"adb -s {device_id} shell pm list packages {package_name}"
         cmd_output = os.popen(cmd).read()
-        return cmd_output == ''
+        return cmd_output != ''
 
     @classmethod
     def get_apk_of_installed_app(cls, device_id, package_name, target_path_local):
