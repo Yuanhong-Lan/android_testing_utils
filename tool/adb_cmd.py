@@ -5,6 +5,7 @@
 import os
 import re
 import shutil
+import subprocess
 from enum import Enum
 from multiprocessing import Lock
 
@@ -106,8 +107,11 @@ class Logcat:
 
     @staticmethod
     def start_logcat(device_id, log_filter, log_file_path):
-        cmd = f"adb -s {device_id} logcat {log_filter} >> '{log_file_path}' &"
-        os.system(cmd)
+        # cmd = f"adb -s {device_id} logcat {log_filter} >> '{log_file_path}' &"
+        # os.system(cmd)
+        cmd = f"adb -s {device_id} logcat {log_filter}"
+        process = subprocess.Popen(cmd, shell=True, stdout=open(log_file_path, 'w'))
+        return process
 
 
 class SendBroadcast:
