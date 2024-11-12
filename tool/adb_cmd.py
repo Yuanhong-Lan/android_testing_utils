@@ -5,6 +5,7 @@
 import os
 import re
 import shutil
+import subprocess
 from enum import Enum
 from multiprocessing import Lock
 
@@ -120,9 +121,12 @@ class ADBLogcat:
 
     @classmethod
     def start_logcat(cls, device_id, log_filter, log_file_path):
-        cmd = f"adb -s {device_id} logcat {log_filter} >> '{log_file_path}' &"
+        # cmd = f"adb -s {device_id} logcat {log_filter} >> '{log_file_path}' &"
+        cmd = f"adb -s {device_id} logcat {log_filter}"
         my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Staring logcat: {cmd}")
-        os.system(cmd)
+        # os.system(cmd)
+        process = subprocess.Popen(cmd, shell=True, stdout=open(log_file_path, 'w'))
+        return process
 
 
 class ADBSendBroadcast:
