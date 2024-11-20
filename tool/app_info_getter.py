@@ -191,7 +191,7 @@ class GetCurrentPackageAndActivity:
 
     @classmethod
     def is_not_responding(cls, device_id) -> bool:
-        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Checking if not responding")
+        my_logger.auto_hint(my_logger.LogLevel.DEBUG, cls, True, f"Checking if not responding")
         cmd = f"adb -s {device_id} shell dumpsys window | grep mCurrentFocus"
         cmd_output = os.popen(cmd).read()
         temp = cmd_output.strip().split('\n')[-1]
@@ -203,7 +203,7 @@ class GetCurrentPackageAndActivity:
 
     @classmethod
     def is_asking_permission(cls, device_id) -> bool:
-        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Checking if asking permission")
+        my_logger.auto_hint(my_logger.LogLevel.DEBUG, cls, True, f"Checking if asking permission")
         cmd = f"adb -s {device_id} shell dumpsys window | grep mCurrentFocus"
         cmd_output = os.popen(cmd).read()
         temp = cmd_output.strip().split('\n')[-1]
