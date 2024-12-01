@@ -17,5 +17,5 @@ class EventUtil:
         return ".Switch" in s
 
     @staticmethod
-    def contain_text(s: str):
-        return "Text" in s
+    def is_text_presentation(s: str):
+        return "TextView" in s
