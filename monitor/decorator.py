@@ -8,20 +8,6 @@ import time
 from android_testing_utils.log import my_logger
 
 
-def function_time_count_decorator(function):
-    @functools.wraps(function)
-    def wrapper(*args, **kwargs):
-        before = time.time()
-        res = function(*args, **kwargs)
-        after = time.time()
-        my_logger.auto_hint(
-            my_logger.LogLevel.INFO, "TimeCountDecorator", False,
-            f"Function {function.__name__} cost time: {round(after-before, 4)}s"
-        )
-        return res
-    return wrapper
-
-
 def class_method_time_count_decorator(function):
     @functools.wraps(function)
     def wrapper(self, *args, **kwargs):
