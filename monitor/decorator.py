@@ -8,7 +8,7 @@ import time
 from android_testing_utils.log import my_logger
 
 
-def class_method_time_count_decorator(function):
+def self_method_time_count_decorator(function):
     @functools.wraps(function)
     def wrapper(self, *args, **kwargs):
         before = time.time()
