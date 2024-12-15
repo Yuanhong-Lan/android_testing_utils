@@ -16,5 +16,5 @@ class TimeOperation:
         try:
             parse(s, fuzzy=False)
             return True
-        except ValueError:
+        except Exception:
             return False
