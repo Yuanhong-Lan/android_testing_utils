@@ -18,4 +18,4 @@ class EventUtil:
 
     @staticmethod
     def is_text_presentation(s: str):
-        return "TextView" in s
+        return ("TextView" in s) or ("android.view.View" == s)
