@@ -38,6 +38,7 @@ class ADBSystemOperation:
             os.system(cmd)
             local_dir, local_file = os.path.split(full_path_local)
             ADBFileOperation.pull(device_id, tmp_path, local_dir)
+            my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Move screen.png to: {full_path_local}")
             shutil.move(os.path.join(local_dir, "screen.png"), full_path_local)
             ADBFileOperation.remove(device_id, tmp_path)
 
