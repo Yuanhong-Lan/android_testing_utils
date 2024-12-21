@@ -6,3 +6,7 @@ class ListOperation:
     @classmethod
     def non_repetition_list_subtract(cls, list1, list2):
         return list(set(list1) - set(list2))
+
+    @classmethod
+    def non_repetition_list_intersection(cls, list1, list2):
+        return list(set(list1) & set(list2))
