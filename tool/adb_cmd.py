@@ -6,6 +6,7 @@ import os
 import re
 import shutil
 import subprocess
+import time
 from enum import Enum
 from multiprocessing import Lock
 
@@ -307,3 +308,24 @@ class ADBGetDeviceInfo:
         pattern = re.compile("(\\S+)\\s+device\n")
         devices = re.findall(pattern, cmd_output)
         return devices
+
+
+class ADBKeyBoard:
+    @classmethod
+    def disable_keyboard(cls, device_id):
+        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Disable keyboard")
+        null_keyboard_apk_path = os.path.join(os.path.dirname(__file__), "apk", "null_keyboard.apk")
+        ADBAppOperation.install_apk_with_permissions(device_id, null_keyboard_apk_path)
+        time.sleep(0.5)
+        if not ADBAppOperation.is_app_installed(device_id, "com.wparam.nullkeyboard"):
+            my_logger.auto_hint(my_logger.LogLevel.WARNING, cls, True, f"Install null keyboard failed, try again!")
+            ADBAppOperation.install_apk_with_permissions(device_id, null_keyboard_apk_path)
+            time.sleep(0.5)
+        cmd = f"adb -s {device_id} shell ime set com.wparam.nullkeyboard/.NullKeyboard"
+        os.system(cmd)
+
+    @classmethod
+    def reset_keyboard(cls, device_id):
+        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Reset keyboard")
+        cmd = f"adb -s {device_id} shell ime reset"
+        os.system(cmd)
