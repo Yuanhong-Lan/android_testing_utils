@@ -3,10 +3,9 @@
 # @Author: Yuanhong Lan
 # ----------------------
 
+import collections
 import os
 import re
-import collections
-
 from typing import List, Tuple, Callable
 
 from android_testing_utils.log import my_logger
@@ -223,34 +222,36 @@ class GetCurrentPackageAndActivity:
         my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Focus info - mFocusedApp  :{cmd_output}")
 
     @classmethod
-    def get_current_package_and_activity_by_dumpsys_window_mCurrentFocus(cls, device_id, log=True) -> Tuple[str, str]:
-        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Getting current package and activity by dumpsys window mCurrentFocus")
+    def get_current_package_and_activity_by_dumpsys_window_mCurrentFocus(cls, device_id, log_level=1) -> Tuple[str, str]:
+        if log_level >= 1:
+            my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Getting current package and activity by dumpsys window mCurrentFocus")
         cmd = f"adb -s {device_id} shell dumpsys window | grep mCurrentFocus"
 
         cmd_output = os.popen(cmd).read()
-        if log:
+        if log_level >= 2:
             my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Focus info:{cmd_output}")
 
         pattern = re.compile("(\\S+)/(\\S+)}")
         current_package, current_activity = GetCurrentPackageAndActivity.__handle_cmd_output(cmd_output, pattern, log=log)
 
-        if log:
+        if log_level >= 2:
             my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"----Current activity is : {current_activity}")
         # TODO: ? SubPanel
         return current_package, current_activity
 
     @classmethod
-    def get_current_package_and_activity_by_dumpsys_window_mFocusedApp(cls, device_id, log=True) -> Tuple[str, str]:
-        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Getting current package and activity by dumpsys window mFocusedApp")
+    def get_current_package_and_activity_by_dumpsys_window_mFocusedApp(cls, device_id, log_level=1) -> Tuple[str, str]:
+        if log_level >= 1:
+            my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Getting current package and activity by dumpsys window mFocusedApp")
         cmd = f"adb -s {device_id} shell dumpsys window | grep mFocusedApp"
         cmd_output = os.popen(cmd).read()
-        if log:
+        if log_level >= 2:
             my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Focus info:{cmd_output}")
 
         pattern = re.compile("(\\S+)/(\\S+)")
         current_package, current_activity = GetCurrentPackageAndActivity.__handle_cmd_output(cmd_output, pattern, log=log)
 
-        if log:
+        if log_level >= 2:
             my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"----Current activity is : {current_activity}")
         # TODO: ? SubPanel
         return current_package, current_activity
