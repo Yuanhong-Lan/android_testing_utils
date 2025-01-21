@@ -159,17 +159,17 @@ class GetEntranceActivity:
 
 class GetCurrentPackageAndActivity:
     @classmethod
-    def __handle_cmd_output(cls, cmd_output, pattern, log=True) -> Tuple[str, str]:
+    def __handle_cmd_output(cls, cmd_output, pattern, log_level=1) -> Tuple[str, str]:
         find_result = pattern.findall(cmd_output)
         if len(find_result) == 0:
-            if log:
+            if log_level >= 1:
                 my_logger.auto_hint(my_logger.LogLevel.WARNING, cls, True, f"Dumpsys UNKNOWN! Current output is {cmd_output}")
             current_package = "UNKNOWN"
             current_activity = "UNKNOWN"
         elif len(find_result) == 1:
             current_package, current_activity = find_result[0]
         else:
-            if log:
+            if log_level >= 1:
                 my_logger.auto_hint(my_logger.LogLevel.WARNING, cls, True, f"Dumpsys need attention! Current output is {cmd_output}")
             current_package, current_activity = find_result[-1]
         if current_activity.startswith('.'):
@@ -232,7 +232,7 @@ class GetCurrentPackageAndActivity:
             my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Focus info:{cmd_output}")
 
         pattern = re.compile("(\\S+)/(\\S+)}")
-        current_package, current_activity = GetCurrentPackageAndActivity.__handle_cmd_output(cmd_output, pattern, log=log)
+        current_package, current_activity = GetCurrentPackageAndActivity.__handle_cmd_output(cmd_output, pattern, log_level=log_level)
 
         if log_level >= 2:
             my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"----Current activity is : {current_activity}")
@@ -249,7 +249,7 @@ class GetCurrentPackageAndActivity:
             my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Focus info:{cmd_output}")
 
         pattern = re.compile("(\\S+)/(\\S+)")
-        current_package, current_activity = GetCurrentPackageAndActivity.__handle_cmd_output(cmd_output, pattern, log=log)
+        current_package, current_activity = GetCurrentPackageAndActivity.__handle_cmd_output(cmd_output, pattern, log_level=log_level)
 
         if log_level >= 2:
             my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"----Current activity is : {current_activity}")
