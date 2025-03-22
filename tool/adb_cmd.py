@@ -28,6 +28,14 @@ class ADBSystemOperation:
         cmd = f"adb -s {device_id} root"
         os.system(cmd)
 
+    @classmethod
+    def is_root(cls, device_id) -> bool:
+        cmd = f"adb -s {device_id} shell whoami"
+        cmd_output = os.popen(cmd).read().strip()
+        res = cmd_output == "root"
+        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Check if root: {res}")
+        return res
+
     screencap_lock = Lock()
 
     @classmethod
