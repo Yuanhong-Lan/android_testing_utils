@@ -30,9 +30,9 @@ class ProcessUtil:
 
 class GetComponentName:
     @classmethod
-    def get_EndEmmaBroadcast_receiver_name_by_aapt_dump_xmltree(cls, apk_path):
-        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Getting EndEmmaBroadcast receiver name by aapt dump xmltree")
-        cmd = f"aapt dump xmltree '{apk_path}' AndroidManifest.xml | grep EndEmmaBroadcast"
+    def get_coverage_broadcast_receiver_name_by_aapt_dump_xmltree(cls, apk_path):
+        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Getting CoverageBroadcast receiver name by aapt dump xmltree")
+        cmd = f"aapt dump xmltree '{apk_path}' AndroidManifest.xml | grep CoverageBroadcast"
         cmd_output = os.popen(cmd).read()
         pattern = re.compile('android:name\\(\\S+\\)="(\\S+)"')
         return re.findall(pattern, cmd_output)[0]
