@@ -329,6 +329,8 @@ class ADBKeyBoard:
             my_logger.auto_hint(my_logger.LogLevel.WARNING, cls, True, f"Install null keyboard failed, try again!")
             ADBAppOperation.install_apk_with_permissions(device_id, null_keyboard_apk_path)
             time.sleep(0.5)
+        cmd = f"adb -s {device_id} shell ime enable com.wparam.nullkeyboard/.NullKeyboard"
+        os.system(cmd)
         cmd = f"adb -s {device_id} shell ime set com.wparam.nullkeyboard/.NullKeyboard"
         os.system(cmd)
 
