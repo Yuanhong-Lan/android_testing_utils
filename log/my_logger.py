@@ -3,12 +3,11 @@
 # @Author: Yuanhong Lan
 # ----------------------
 
-import os
 import datetime
-
+import os
 from enum import Enum
-from multiprocessing import Lock
 from functools import total_ordering
+from multiprocessing import Lock
 
 import yaml
 
@@ -43,7 +42,7 @@ def new_line():
     output(flush=True)
 
 
-def hint(log_level: LogLevel, tag: str, time: bool, info=""):
+def hint(log_level: LogLevel, tag: str, time: bool, info="", file_stream=None):
     if log_level < CURRENT_LOG_LEVEL:
         return
 
@@ -51,12 +50,12 @@ def hint(log_level: LogLevel, tag: str, time: bool, info=""):
     if s.endswith('\n'):
         s = s[:-1]
     if time:
-        output(f"{log_level} | {tag} | {datetime.datetime.now()} | {s}", flush=True)
+        output(f"{log_level} | {tag} | {datetime.datetime.now()} | {s}", flush=True, file=file_stream)
     else:
-        output(f"{log_level} | {tag} | {s}", flush=True)
+        output(f"{log_level} | {tag} | {s}", flush=True, file=file_stream)
 
 
-def auto_hint(log_level: LogLevel, tag, time: bool, info=""):
+def auto_hint(log_level: LogLevel, tag, time: bool, info="", file_stream=None):
     if type(tag) == str:
         real_tag = tag
     elif type(tag) == type:
@@ -65,7 +64,7 @@ def auto_hint(log_level: LogLevel, tag, time: bool, info=""):
         real_tag = f"(AUTO-FUNC) {tag.__name__}"
     else:
         real_tag = f"(AUTO-INST) {tag.__class__.__name__}"
-    hint(log_level, real_tag, time, info)
+    hint(log_level, real_tag, time, info, file_stream)
 
 
 def append_event_extraction_log(location, info=""):
