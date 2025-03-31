@@ -320,8 +320,8 @@ class ADBGetDeviceInfo:
 
 class ADBKeyBoard:
     @classmethod
-    def disable_keyboard(cls, device_id):
-        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Disable keyboard")
+    def disable_keyboard_by_null_keyboard(cls, device_id):
+        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Disable keyboard by null keyboard")
         null_keyboard_apk_path = os.path.join(os.path.dirname(__file__), "apk", "null_keyboard.apk")
         ADBAppOperation.install_apk_with_permissions(device_id, null_keyboard_apk_path)
         time.sleep(0.5)
@@ -332,6 +332,12 @@ class ADBKeyBoard:
         cmd = f"adb -s {device_id} shell ime enable com.wparam.nullkeyboard/.NullKeyboard"
         os.system(cmd)
         cmd = f"adb -s {device_id} shell ime set com.wparam.nullkeyboard/.NullKeyboard"
+        os.system(cmd)
+
+    @classmethod
+    def disable_keyboard_by_all_disable(cls, device_id):
+        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Disable keyboard by all disable")
+        cmd = f"adb -s {device_id} shell \"ime list -a | grep \'mId=\' | cut -d= -f2\" | xargs -L1 adb -s {device_id} shell ime disable"
         os.system(cmd)
 
     @classmethod
