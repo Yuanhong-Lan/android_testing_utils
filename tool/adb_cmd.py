@@ -60,6 +60,12 @@ class ADBSystemOperation:
         os.system(cmd)
         my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Finish screen record: {cmd}")
 
+    @classmethod
+    def sync_system_time(cls, device_id):
+        cmd = f"adb -s {device_id} shell am broadcast -a android.intent.action.TIME_SET"
+        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Sync system time: {cmd}")
+        os.system(cmd)
+
 
 class ADBAppOperation:
     @classmethod
