@@ -81,6 +81,12 @@ class ADBAppOperation:
         os.system(cmd)
 
     @classmethod
+    def install_apk_with_permissions_allow_downgrade(cls, device_id, apk_file_path):
+        cmd = f"timeout 20s adb -s {device_id} install -r -g -d '{apk_file_path}'"
+        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Installing app with permission and allow downgrade: {cmd}")
+        os.system(cmd)
+
+    @classmethod
     def start_app_by_am(cls, device_id, package_name, entrance_activity):
         cmd = f"adb -s {device_id} shell am start -S -n {package_name}/{entrance_activity}"
         my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Starting app by am: {cmd}")
