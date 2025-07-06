@@ -7,6 +7,7 @@ import re
 import shutil
 import subprocess
 import time
+from datetime import datetime
 from enum import Enum
 from multiprocessing import Lock
 
@@ -62,8 +63,29 @@ class ADBSystemOperation:
 
     @classmethod
     def sync_system_time(cls, device_id):
+        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Sync system time.")
+
+        cmd = f"adb -s {device_id} shell settings put global auto_time 0"
+        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Disable auto time: {cmd}")
+        os.system(cmd)
+
+        time.sleep(0.5)
+
+        current_time_str = datetime.now().strftime("%m%d%H%M%Y.%S")
+        cmd = f"adb -s {device_id} shell date -s {current_time_str}"
+        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Set system time: {cmd}")
+        os.system(cmd)
+
+        time.sleep(0.5)
+
+        cmd = f"adb -s {device_id} shell settings put global auto_time 1"
+        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Enable auto time: {cmd}")
+        os.system(cmd)
+
+        time.sleep(0.5)
+
         cmd = f"adb -s {device_id} shell am broadcast -a android.intent.action.TIME_SET"
-        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Sync system time: {cmd}")
+        my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Broadcast time set action: {cmd}")
         os.system(cmd)
 
 
