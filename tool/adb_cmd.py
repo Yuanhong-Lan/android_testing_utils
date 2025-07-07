@@ -69,20 +69,20 @@ class ADBSystemOperation:
         my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Disable auto time: {cmd}")
         os.system(cmd)
 
-        time.sleep(0.5)
+        time.sleep(1)
 
         current_time_str = datetime.now().strftime("%m%d%H%M%Y.%S")
         cmd = f"adb -s {device_id} shell date -s {current_time_str}"
         my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Set system time: {cmd}")
         os.system(cmd)
 
-        time.sleep(0.5)
+        time.sleep(1)
 
         cmd = f"adb -s {device_id} shell settings put global auto_time 1"
         my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Enable auto time: {cmd}")
         os.system(cmd)
 
-        time.sleep(0.5)
+        time.sleep(1)
 
         cmd = f"adb -s {device_id} shell am broadcast -a android.intent.action.TIME_SET"
         my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Broadcast time set action: {cmd}")
