@@ -133,8 +133,8 @@ class ADBAppOperation:
         os.system(cmd)
 
     @classmethod
-    def uninstall_apk(cls, device_id, apk_file_path):
-        cmd = f"adb -s {device_id} uninstall '{apk_file_path}'"
+    def uninstall_app(cls, device_id, app_package):
+        cmd = f"adb -s {device_id} uninstall '{app_package}'"
         my_logger.auto_hint(my_logger.LogLevel.INFO, cls, True, f"Uninstall app: {cmd}")
         os.system(cmd)
 
